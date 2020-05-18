@@ -1,0 +1,78 @@
+---
+openapi: 3.0.2
+info:
+  title: License
+  version: 1.0.0
+servers:
+- url: '{protocol}://{host}:{port}/license'
+  description: ""
+  variables:
+    protocol:
+      default: http
+      description: Protocol for the call. Either http or https
+    host:
+      default: localhost
+    port:
+      default: "8080"
+paths:
+  /login/{userId}:
+    post:
+      requestBody:
+        description: the Machine Information details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MachineInformation'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginLicenseResult'
+          description: License has been granted
+    parameters:
+    - name: userId
+      description: the user identifier
+      schema:
+        type: string
+      in: path
+      required: true
+components:
+  schemas:
+    MachineInformation:
+      description: Describes the Machine information from where the login is being
+        performed
+      type: object
+      properties:
+        hostAddress:
+          description: Address of the host making the login
+          type: string
+        hostName:
+          description: ""
+          type: string
+        workstationUser:
+          description: ""
+          type: string
+        computerName:
+          description: ""
+          type: string
+        clientName:
+          description: ""
+          type: string
+    LoginLicenseResult:
+      title: Root Type for LoginLicenseResult
+      description: the Login License Result
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+      example:
+        status: Ok
+        message: License granted
+  responses:
+    LoginLicenseStatus:
+      content:
+        application/json: {}
+      description: The status response provided for a login license check
